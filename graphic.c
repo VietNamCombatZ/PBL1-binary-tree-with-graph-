@@ -191,13 +191,13 @@ void drawTree(struct Node* root, int x, int y, int xOffset, int level) {
 //            
 // Draw center node
 // Khi nao co struct Node -> Center thi xoa comment de chay dong lenh duoi
-//if (root->Center != NULL) {
+//if (root-> Center != NULL) {
 //            line(x, y, x, y + 100);
 //
-//            if (level == 0 ){
+//            
 //            	drawTree(root->Left, x - 0, y + 100, 0, level + 1);
 ////            	drawTree(root->Left, x - xOffpos, y + 100, xOffpos/2);
-//			}
+//			
 
         }
         // Draw right subtree
