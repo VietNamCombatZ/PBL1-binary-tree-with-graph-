@@ -160,6 +160,32 @@ void addToExpression(Node*&R, string str)
 int xOffpos = 50;
 int lCnt = 0;
 int rCnt = 0;
+
+
+int childCount(struct Node* root){
+	int x,y;
+	if(root->Left == NULL && root->Right == NULL)
+	{
+		return 1;
+	}else{
+		if(root->Left != NULL){
+			x = 1+ childCount(root->Left);
+		}
+		if(root->Right != NULL){
+			y = 1+ childCount(root->Right);
+			
+		}
+		
+		
+		if(x>=y){
+			return x;
+		}
+		else{
+			return y;
+		}
+	}
+}
+
 void drawTree(struct Node* root, int x, int y, int xOffset, int level) {
     if (root != NULL) {
         char buffer[10]; //chua du lieu cua NODE sau khi chuyen tu int -> string
@@ -171,17 +197,31 @@ void drawTree(struct Node* root, int x, int y, int xOffset, int level) {
         setfillstyle(SOLID_FILL, BLUE);
 
         
+        if(root->Right != NULL && root->Left == NULL){
+//        	Draw when node has only 1 child node
+        	line(x,y,x,y+100);
+        	
+			drawTree(root->Right, x, y+100, 0, level+1);
+        	
+		}else{
+		
+		
+        
         // Draw left subtree
         if (root->Left != NULL) {
-            line(x, y, x - xOffset, y + 100);
+        	int cntLeft = childCount(root->Left);
+        	
+            
 //            lCnt++;
             if (level == 0 ){
+            	line(x, y, x - xOffset, y + 100);
             	drawTree(root->Left, x - xOffset, y + 100, xOffset/3, level + 1);
 //            	drawTree(root->Left, x - xOffpos, y + 100, xOffpos/2);
 			}
 			else
 			{
-				drawTree(root->Left, x - xOffset, y + 100 , xOffset, level + 1 );
+				line(x, y, x - xOffset*(cntLeft-1), y + 100);
+				drawTree(root->Left, x - xOffset*(cntLeft-1), y + 100 , xOffset, level + 1 );
 //                 drawTree(root->Left, x - xOffpos, y + 100, xOffpos); 
 				
 			}
@@ -202,29 +242,33 @@ void drawTree(struct Node* root, int x, int y, int xOffset, int level) {
         }
         // Draw right subtree
         if (root->Right != NULL) {
-            line(x, y, x + xOffset, y + 100);
-            rCnt++;
+        	int cntRight = childCount(root->Right);
+        	
+            
+            
             if (level == 0 ){
+            	line(x, y, x + xOffset, y + 100);
             	drawTree(root->Right, x + xOffset, y + 100, xOffset / 3, level + 1);
             	
             	
 //            	drawTree(root->Right, x + xOffpos, y + 100, xOffpos / 2);
 			}
 			else
-			if (level == 1)
+//			if (level == 1)
+//			{
+//				drawTree(root->Right, x + xOffset, y + 100, xOffset / 3 * 2, level + 1);
+//			}
+//			else
 			{
-				drawTree(root->Right, x + xOffset, y + 100, xOffset / 3 * 2, level + 1);
-			}
-			else
-			{
-				drawTree(root->Right, x + xOffset, y + 100 , xOffset , level + 1 );
+				line(x, y, x + xOffset*(cntRight-2), y + 100);
+				drawTree(root->Right, x + xOffset*(cntRight-2), y + 100 , xOffset , level + 1 );
 //				drawTree(root->Right, x + xOffpos, y + 100, xOffpos );
 			}
 //         drawTree(root->Right, x + xOffset, y + 100, xOffset / 2);
 
 //            
         }
-        
+    }
         sprintf(buffer, "%c", root->data); //chuyen du lieu tu data sang dang string va gan vao buffer
         fillellipse(x,y,30,30);
         
@@ -267,3 +311,8 @@ setbkcolor(BLUE);
     closegraph();
  return 0;
 }
+
+/*Exam input: 
+3/7*8-6+7*9/(6*3-5*6/9)#
+3/7*8-6+7*9/(6*3-5*6/(9-7*8+8/3))#
+*/
