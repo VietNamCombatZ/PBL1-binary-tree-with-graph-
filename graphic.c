@@ -19,6 +19,8 @@ tNode *newNode(string data){
 	return node;
 }
 
+// Check  
+
 int heightOfTree(tNode *root){
 	if(root==NULL) return 0;
 	int height = 1;
@@ -429,7 +431,7 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
         // Draw left subtree
         
         if(root -> pRight != NULL && root -> pLeft == NULL){
-        	//        	Draw when node has only 1 child node
+        	// Draw when node has only 1 child node
         	line(x,y,x,y+100);
 
 			drawTree(root->pRight, x, y+100, 0, level+1);
@@ -441,23 +443,82 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
         if (root->pLeft != NULL) {
         	int cntLeft = childCount(root->pLeft);
         	
-            line(x, y, x - xOffset, y + 100);
-            drawTree(root->pLeft, x - xOffset, y + 100 , xOffset / 2, level + 1);
-        }
+        	if (level == 0 ){
+            	line(x, y, x - xOffset, y + 100);
+            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1);
+
+			}
+			else
+			{
+//				line(x, y, x - xOffset*(cntLeft+1), y + 100);
+//				drawTree(root->pLeft, x - xOffset*(cntLeft+1), y + 100 , xOffset, level + 1 );
+				
+				line(x, y, x - xOffset, y + 100);
+            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1);
+
+				
+			}
+		}
+        	
+//        	if (level == 0 ){
+//            	line(x, y, x - xOffset, y + 100);
+//            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset / 3, level + 1);
+//            	
+//            	
+//
+//			} else{
+//				
+//				if(cntLeft < 3){
+//					line(x, y, x + xOffset*(cntLeft+1), y + 100);
+//				drawTree(root->pLeft, x - xOffset*(cntLeft-1), y + 100 , xOffset , level + 1 );
+//				}else{
+//					line(x, y, x - xOffset*(cntLeft+1), y + 100);
+//				drawTree(root->pLeft, x - xOffset*(cntLeft-1), y + 100 , xOffset , level + 1 );
+//					
+//				}
+//				
+//
+//			}
+        	
+//            line(x, y, x - xOffset, y + 100);
+//            drawTree(root->pLeft, x - xOffset, y + 100 , xOffset / 2, level + 1);
+        
         
         // Draw right subtree
         if (root->pRight != NULL) {
         	int cntRight = childCount(root->pRight);
-            line(x, y, x + xOffset, y + 100);
-            drawTree(root->pRight, x + xOffset, y + 100 , xOffset / 2, level + 1);
+        	
+        	 if (level == 0 ){
+            	line(x, y, x + xOffset, y + 100);
+            	drawTree(root->pRight, x + xOffset, y + 100, xOffset / 3, level + 1);
+            	
+            	
+
+			} else{
+				
+				if(cntRight < 3){
+					line(x, y, x + xOffset*(cntRight+1), y + 100);
+				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 100 , xOffset , level + 1 );
+				}else{
+					line(x, y, x + xOffset*(cntRight+1), y + 100);
+				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 100 , xOffset , level + 1 );
+					
+				}
+				
+
+			}
+//            line(x, y, x + xOffset, y + 100);
+//            drawTree(root->pRight, x + xOffset, y + 100 , xOffset / 2, level + 1);
         }
         
     }
+    
+    
         
         // Draw current node
         setfillstyle(SOLID_FILL, BLUE);
-        fillellipse(x, y, 30, 30);
-        moveto(x - 12, y - 10);
+        fillellipse(x, y, 35, 35);
+        moveto(x - 10 - 6*(root->data.size() - 1), y - 10);
         char buffer[2]; buffer[1] = '\0';
         for(int i = 0; i < root->data.size(); i++) {
             buffer[0] = root->data[i];
@@ -472,15 +533,41 @@ int main(){
 	queue<string> q;
 	stack<string> st;
 	char c[1000];
+	char expression[100];
+	
+	int option = -1;
+	
 	cout << "Enter Expression : ";
+	
+	
+//	FILE *fptr;
+//	
+//	
+//	
+//	
+////	fptr = fopen("Input_expression_01.txt", "r");
+////	fptr = fopen("Input_expression_02.txt", "r");
+////	fptr = fopen("Input_expression_03.txt", "r");
+//
+//    
+//
+//    fgets(expression, 100, fptr);
+//cout << expression << endl;
+//    put (expression, q, st);
+	
 	gets(c); cout << c << endl;
 	
 	put(c, q, st);
+
+    
+    
 	
 	root = makeExpression(q);
 	
 	cout << "\nLNR: \n";
 	LNR(root);
+	
+//	Open graphic mode
 	
     int gd = DETECT, gm;
 	initwindow(1000,1000);
@@ -489,7 +576,7 @@ int main(){
 	settextstyle(4, HORIZ_DIR, 1); //thay doi kich co va font chu
 	setbkcolor(BLUE);
 	
-//	Create a sample binary tree
+//	Create a binary tree
     
  
 	
