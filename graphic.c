@@ -12,7 +12,7 @@ struct tNode{
 tNode *root;
 
 tNode *newNode(string data){
-	tNode *node = new tNode();
+	tNode *node = new tNode(); //Code C++ dùng new chớ đừng dùng malloc
 	node->data = data;
 	node->pLeft = NULL;
 	node->pRight = NULL;
