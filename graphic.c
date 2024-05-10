@@ -12,7 +12,7 @@ struct tNode{
 tNode *root;
 
 tNode *newNode(string data){
-	tNode *node = new tNode(); //Code C++ dùng new chớ đừng dùng malloc
+	tNode *node = new tNode();
 	node->data = data;
 	node->pLeft = NULL;
 	node->pRight = NULL;
@@ -29,7 +29,7 @@ int heightOfTree(tNode *root){
 }
 
 
-//Read trê follow the order Left node - Middle Node - Right Node
+//Read tree follow the order Left node - Middle Node - Right Node
 void LNR(tNode *root){
 	if(root!=NULL){
 		if(root->pLeft != NULL) LNR(root->pLeft);
@@ -358,9 +358,9 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         
         if(root -> pRight != NULL && root -> pLeft == NULL){
         	// Draw when node has only 1 child node
-        	line(x,y,x,y+100);
+        	line(x,y,x,y+80);
 
-			drawTree(root->pRight, x, y+100, xOffset, level+1, 0); // if xOffset = 0 the following childNode will be place above each other
+			drawTree(root->pRight, x, y+80, xOffset, level+1, 0); // if xOffset = 0 the following childNode will be place above each other
         	
         	
 		}else{
@@ -370,16 +370,16 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         	int cntLeft = childCount(root->pLeft);
         	
         	if (level == 0 ){
-            	line(x, y, x - xOffset, y + 100);
-            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1, 1 );
+            	line(x, y, x - xOffset, y + 80);
+            	drawTree(root->pLeft, x - xOffset, y + 80, xOffset/3, level + 1, 1 );
 
 			}
 			else
 			{
 
 				
-				line(x, y, x - xOffset, y + 100);
-            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset, level + 1, 1);
+				line(x, y, x - xOffset, y + 80);
+            	drawTree(root->pLeft, x - xOffset, y + 80, xOffset, level + 1, 1);
 
 				
 			}
@@ -393,19 +393,19 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         	int cntRight = childCount(root->pRight);
         	
         	 if (level == 0 ){
-            	line(x, y, x + xOffset, y + 100);
-            	drawTree(root->pRight, x + xOffset, y + 100, xOffset / 3, level + 1, 1);
+            	line(x, y, x + xOffset, y + 80);
+            	drawTree(root->pRight, x + xOffset, y + 80, xOffset / 3, level + 1, 1);
             	
             	
 
 			} else{
 				
 				if(cntRight < 2){
-					line(x, y, x + xOffset*(cntRight), y + 100);
-				drawTree(root->pRight, x + xOffset*(cntRight), y + 100 , xOffset , level + 1, 1 );
+					line(x, y, x + xOffset*(cntRight), y + 80);
+				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1, 1 );
 				}else{
-					line(x, y, x + xOffset*(cntRight-1), y + 100);
-				drawTree(root->pRight, x + xOffset*(cntRight-1), y + 100 , xOffset , level + 1 ,1);
+					line(x, y, x + xOffset*(cntRight-1), y + 80);
+				drawTree(root->pRight, x + xOffset*(cntRight-1), y + 80 , xOffset , level + 1 ,1);
 					
 				}
 				
@@ -420,7 +420,7 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         
         // Draw current node
         setfillstyle(SOLID_FILL, BLUE);
-        fillellipse(x, y, 35, 35);
+        fillellipse(x, y, 33, 33);
         moveto(x - 10 - 6*(root->data.size() - 1), y - 10);
         char buffer[2]; buffer[1] = '\0';
         for(int i = 0; i < root->data.size(); i++) {
@@ -483,7 +483,7 @@ int main(){
     
  
 	
-	drawTree(root, 500, 50, 150, 0, 1);
+	drawTree(root, 500, 50, 170, 0, 1);
 
   // Close graphics mode
     getch();
@@ -492,4 +492,4 @@ int main(){
 	return 0;
 }
 
-//cos(3)*7-9/(7-3) BUG!!!
+//cos(93)*7-9/(7-533*7/(9-16*3)) 
