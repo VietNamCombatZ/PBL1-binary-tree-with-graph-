@@ -12,7 +12,7 @@ struct tNode{
 tNode *root;
 
 tNode *newNode(string data){
-	tNode *node = (tNode*)malloc(sizeof(tNode));
+	tNode *node = new tNode();
 	node->data = data;
 	node->pLeft = NULL;
 	node->pRight = NULL;
@@ -28,7 +28,8 @@ int heightOfTree(tNode *root){
 	return 1 + max(heightOfTree(root->pLeft), heightOfTree(root->pRight));
 }
 
-//duyet cay theo thu tu node trai - node chinh - node phai
+
+//Read trê follow the order Left node - Middle Node - Right Node
 void LNR(tNode *root){
 	if(root!=NULL){
 		if(root->pLeft != NULL) LNR(root->pLeft);
@@ -115,10 +116,10 @@ double s_to_double(string x){				//string -> double
     return tmp;
 }
 
-void put(char* s, queue<string> &q, stack<string> &st){			// chuyen doi bieu thuc tu string sang queue
-    for(int i = 0; i < size(s);i++){						// Bieu thuc hau to luu trong q, toan tu luu trong st
+void put(char* s, queue<string> &q, stack<string> &st){			// convert expression from string to queue
+    for(int i = 0; i < size(s);i++){						// Suffix expression stored in q, operator store in st
         if(s[i] == ' ') continue;
-        else if(isdigit(s[i])){								// Doc so
+        else if(isdigit(s[i])){								// Read number
             string tmp;
             tmp += s[i];
             while(isdigit(s[i + 1])){
@@ -134,19 +135,19 @@ void put(char* s, queue<string> &q, stack<string> &st){			// chuyen doi bieu thu
             }
             q.push(tmp);
         }
-        else if(s[i] == '('){								// Doc dau mo ngoac
+        else if(s[i] == '('){								// Read open bracket
             string tmp;
             tmp += s[i];
             st.push(tmp);
         }
-        else if(s[i] == ')'){								// Doc dau dong ngoac
+        else if(s[i] == ')'){								// Read close bracket
             while(!st.empty() && st.top() != "("){
                 q.push(st.top());
                 st.pop();
             }
             if(!st.empty()) st.pop();
         }
-        // Doc cac ham dac biet
+        // Read special function
         else if(s[i] == 'l' && s[i + 1] == 'n'){
             i++;
             string s = "ln";
@@ -342,99 +343,24 @@ int childCount(struct tNode* root){
 	}
 }
 
-//void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
-//    if (root != NULL) {
-//        char buffer[2]; buffer[1] = '\0';//chua du lieu cua NODE sau khi chuyen tu int -> string
-//		setfillstyle(SOLID_FILL, BLUE);
-//
-//
-////        if(root->pRight != NULL && root->pLeft == NULL){
-//////        	Draw when node has only 1 child node
-////        	line(x,y,x,y+100);
-////
-////			drawTree(root->pRight, x, y+100, 0, level+1);
-////
-////		}else{
-//
-//
-//
-//        // Draw left subtree
-//        if (root->pLeft != NULL) {							//BUG!!!!
-//            line(x, y, x - xOffset, y + 100);
-//        	int cntLeft = childCount(root->pLeft);
-//
-//
-////            lCnt++;
-//            if (level == 0 ){
-//            	line(x, y, x - xOffset, y + 100);
-//            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1);
-////            	drawTree(root->Left, x - xOffpos, y + 100, xOffpos/2);
-//			}
-//			else
-//			{
-//				drawTree(root->pLeft, x - xOffset, y + 100 , xOffset, level + 1 );
-//				line(x, y, x - xOffset*(cntLeft-1), y + 100);
-//				drawTree(root->pLeft, x - xOffset*(cntLeft-1), y + 100 , xOffset, level + 1 );
-////                 drawTree(root->Left, x - xOffpos, y + 100, xOffpos); 
-//
-//			}
-//		}
-////			void drawTree(struct Node* root, int x, int y, int xOffset, int level) {}
-//        // Draw right subtree
-//        if (root->pRight != NULL) {
-//            line(x, y, x + xOffset, y + 100);
-//            rCnt++;
-//        	int cntRight = childCount(root->pRight);
-//
-//
-//
-//            if (level == 0 ){
-//            	line(x, y, x + xOffset, y + 100);
-//            	drawTree(root->pRight, x + xOffset, y + 100, xOffset / 3, level + 1);
-//
-//
-////            	drawTree(root->Right, x + xOffpos, y + 100, xOffpos / 2);
-//			}
-//			else
-//			if (level == 1)
-//			{
-//				drawTree(root->pRight, x + xOffset, y + 100, xOffset / 3 * 2, level + 1);
-//			}
-//			else
-//			{
-//				drawTree(root->pRight, x + xOffset, y + 100 , xOffset , level + 1 );
-//				line(x, y, x + xOffset*(cntRight-2), y + 100);
-//				drawTree(root->pRight, x + xOffset*(cntRight-2), y + 100 , xOffset , level + 1 );
-////				drawTree(root->Right, x + xOffpos, y + 100, xOffpos );
-//			}
-////         drawTree(root->Right, x + xOffset, y + 100, xOffset / 2);
-//        }
-//    
-//        
-////	convert_to_char(buffer,root->data); //chuyen du lieu tu data sang dang string va gan vao buffer
-////	sprintf(buffer,"%s", root->data);
-//    fillellipse(x,y,30,30);
-//    moveto(x-12, y-10);
-//    for(int i=0; i<root->data.size(); i++){
-//    	buffer[0] = root->data[i];
-//    	outtext(buffer);
-//	}
-////    outtextxy(x - 12, y - 10, buffer);  //in ra chuoi buffer tren man hinh
-//    
-//	}
-//}
 
 
-/*Code da fix*/
-void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
+
+/*Code  fixed*/
+//check neu la ve node sau thang xuong thi check = 0, con binh thuong check = 1
+//check iff following node is drawn straight down, check = 0, else check = 1
+
+void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int check) {
     if (root != NULL) {
         // Draw left subtree
+        
+        int xOffset_1 = xOffset*check;
         
         if(root -> pRight != NULL && root -> pLeft == NULL){
         	// Draw when node has only 1 child node
         	line(x,y,x,y+100);
 
-			drawTree(root->pRight, x, y+100, 0, level+1);
+			drawTree(root->pRight, x, y+100, xOffset, level+1, 0); // if xOffset = 0 the following childNode will be place above each other
         	
         	
 		}else{
@@ -445,43 +371,21 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
         	
         	if (level == 0 ){
             	line(x, y, x - xOffset, y + 100);
-            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1);
+            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1, 1 );
 
 			}
 			else
 			{
-//				line(x, y, x - xOffset*(cntLeft+1), y + 100);
-//				drawTree(root->pLeft, x - xOffset*(cntLeft+1), y + 100 , xOffset, level + 1 );
+
 				
 				line(x, y, x - xOffset, y + 100);
-            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset/3, level + 1);
+            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset, level + 1, 1);
 
 				
 			}
 		}
         	
-//        	if (level == 0 ){
-//            	line(x, y, x - xOffset, y + 100);
-//            	drawTree(root->pLeft, x - xOffset, y + 100, xOffset / 3, level + 1);
-//            	
-//            	
-//
-//			} else{
-//				
-//				if(cntLeft < 3){
-//					line(x, y, x + xOffset*(cntLeft+1), y + 100);
-//				drawTree(root->pLeft, x - xOffset*(cntLeft-1), y + 100 , xOffset , level + 1 );
-//				}else{
-//					line(x, y, x - xOffset*(cntLeft+1), y + 100);
-//				drawTree(root->pLeft, x - xOffset*(cntLeft-1), y + 100 , xOffset , level + 1 );
-//					
-//				}
-//				
-//
-//			}
-        	
-//            line(x, y, x - xOffset, y + 100);
-//            drawTree(root->pLeft, x - xOffset, y + 100 , xOffset / 2, level + 1);
+
         
         
         // Draw right subtree
@@ -490,25 +394,24 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
         	
         	 if (level == 0 ){
             	line(x, y, x + xOffset, y + 100);
-            	drawTree(root->pRight, x + xOffset, y + 100, xOffset / 3, level + 1);
+            	drawTree(root->pRight, x + xOffset, y + 100, xOffset / 3, level + 1, 1);
             	
             	
 
 			} else{
 				
-				if(cntRight < 3){
-					line(x, y, x + xOffset*(cntRight+1), y + 100);
-				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 100 , xOffset , level + 1 );
+				if(cntRight < 2){
+					line(x, y, x + xOffset*(cntRight), y + 100);
+				drawTree(root->pRight, x + xOffset*(cntRight), y + 100 , xOffset , level + 1, 1 );
 				}else{
-					line(x, y, x + xOffset*(cntRight+1), y + 100);
-				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 100 , xOffset , level + 1 );
+					line(x, y, x + xOffset*(cntRight-1), y + 100);
+				drawTree(root->pRight, x + xOffset*(cntRight-1), y + 100 , xOffset , level + 1 ,1);
 					
 				}
 				
 
 			}
-//            line(x, y, x + xOffset, y + 100);
-//            drawTree(root->pRight, x + xOffset, y + 100 , xOffset / 2, level + 1);
+
         }
         
     }
@@ -572,15 +475,15 @@ int main(){
     int gd = DETECT, gm;
 	initwindow(1000,1000);
 
-	setlinestyle(CENTER_LINE, 0,3); // thay doi thickness cua line
-	settextstyle(4, HORIZ_DIR, 1); //thay doi kich co va font chu
+	setlinestyle(CENTER_LINE, 0,3); // change line thickness
+	settextstyle(4, HORIZ_DIR, 1); //change character size and font
 	setbkcolor(BLUE);
 	
 //	Create a binary tree
     
  
 	
-	drawTree(root, 600, 50, 200, 0);
+	drawTree(root, 500, 50, 150, 0, 1);
 
   // Close graphics mode
     getch();
