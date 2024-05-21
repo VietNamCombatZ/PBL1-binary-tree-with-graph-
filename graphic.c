@@ -1,4 +1,10 @@
-#include <bits/stdc++.h>
+#include <cstdlib>
+#include<cstdio>
+#include <stack>
+#include <queue>
+#include <iostream>
+#include <cmath>
+
 #include <graphics.h>
 #define E exp(1)
 #define Pi M_PI
@@ -320,11 +326,38 @@ int rCnt = 0;
 
 
 int childCount(struct tNode* root){
-	int x,y;
+	int x=0,y=0;
 	if(root->pLeft == NULL && root->pRight == NULL)
 	{
 		return 1;
-	}else{
+	}else 
+//if(root->pRight !=NULL && root->pLeft==NULL){
+//			x = 1 + childCount(root->pRight);
+//			return x;
+//		}else{
+//			if(root->pLeft != NULL){
+//			x = 1+ childCount(root->pLeft);
+//		}
+//		if(root->pRight != NULL){
+//			y = 1+ childCount(root->pRight);
+//
+//		}
+//		
+//		if(x >= y){
+//			return x;
+//		}
+//		else{
+//			return y;
+//		}
+//			
+//		}
+	
+	{
+		
+		if(root->pRight !=NULL && root->pLeft==NULL){
+			x = 1 + childCount(root->pRight);
+		}
+		
 		if(root->pLeft != NULL){
 			x = 1+ childCount(root->pLeft);
 		}
@@ -334,7 +367,7 @@ int childCount(struct tNode* root){
 		}
 
 
-		if(x>=y){
+		if(x >= y){
 			return x;
 		}
 		else{
@@ -348,9 +381,11 @@ int childCount(struct tNode* root){
 
 /*Code  fixed*/
 //check neu la ve node sau thang xuong thi check = 0, con binh thuong check = 1
-//check iff following node is drawn straight down, check = 0, else check = 1
+//check if following node is drawn straight down, check = 0, else check = 1
 
 void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int check) {
+	
+	
     if (root != NULL) {
         // Draw left subtree
         
@@ -377,9 +412,10 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
 			else
 			{
 
+
+				line(x, y, x - xOffset*cntLeft, y + 80);
 				
-				line(x, y, x - xOffset, y + 80);
-            	drawTree(root->pLeft, x - xOffset, y + 80, xOffset, level + 1, 1);
+            	drawTree(root->pLeft, x - xOffset*cntLeft, y + 80, xOffset, level + 1, 1);
 
 				
 			}
@@ -400,12 +436,20 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
 
 			} else{
 				
-				if(cntRight < 2){
+				if(cntRight < 3){
+					line(x, y, x + xOffset*(cntRight+1), y + 80);
+				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 80 , xOffset , level + 1, 1 );
+				}else if(cntRight >=3 && cntRight < 5){
 					line(x, y, x + xOffset*(cntRight), y + 80);
-				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1, 1 );
-				}else{
-					line(x, y, x + xOffset*(cntRight-1), y + 80);
-				drawTree(root->pRight, x + xOffset*(cntRight-1), y + 80 , xOffset , level + 1 ,1);
+				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
+					
+				}else
+				
+				
+				
+				{
+					line(x, y, x + xOffset*(cntRight), y + 80);
+				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
 					
 				}
 				
@@ -473,7 +517,7 @@ int main(){
 //	Open graphic mode
 	
     int gd = DETECT, gm;
-	initwindow(1000,1000);
+	initwindow(1280,1600);
 
 	setlinestyle(CENTER_LINE, 0,3); // change line thickness
 	settextstyle(4, HORIZ_DIR, 1); //change character size and font
@@ -483,7 +527,7 @@ int main(){
     
  
 	
-	drawTree(root, 500, 50, 170, 0, 1);
+	drawTree(root, 500, 50, 150, 0, 1);
 
   // Close graphics mode
     getch();
