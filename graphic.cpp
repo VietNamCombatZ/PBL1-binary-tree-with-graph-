@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include<cstdio>
 #include<conio.h>
+#include <windows.h>
 #include <stack>
 #include <queue>
 #include <cmath>
@@ -539,6 +540,9 @@ int main(){
 	queue<string> q;
 	stack<string> st;
     FILE *fptr;
+    
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    
 	char c[1000];
 	char expression[100];
 	int menu;
@@ -546,6 +550,8 @@ int main(){
 	
 	int option = -1;
 	int check;
+	
+	SetConsoleTextAttribute(h, 6);
 		
 	while(1){
 		printf("\n\n-----Select the code file-----\n\n");
@@ -553,7 +559,7 @@ int main(){
 		printf("File-2: cos(3*ln(pi)-9.6/77)-7*8+ln(6*4-32)\n");
 		printf("File-3: atan(88)-9/sinh(34)+6*sqrt(7.78-cosh(78)) \n");
 		printf("File-4: log(7.66-abs(ln(93)-6*7))+69.5/(3*6-sinh(83))\n");
-		printf("9. Enter your own expression:\n");
+		printf("\n9. Enter your own expression:\n");
 		printf("0. Quit the program\n");
 		printf("\n--------------------------------\n");
 		printf("Enter your choice:");
