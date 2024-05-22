@@ -1,11 +1,13 @@
+#include <iostream>
+#include<fstream>
 #include <cstdlib>
 #include<cstdio>
 #include <stack>
 #include <queue>
-#include <iostream>
 #include <cmath>
 
 #include <graphics.h>
+
 #define E exp(1)
 #define Pi M_PI
 using namespace std;
@@ -482,6 +484,8 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
     }
 }
 
+
+
 void drawFunction(){
 	//	Open graphic mode
 	
@@ -507,19 +511,20 @@ void drawFunction(){
 //    	circle(startX, startY, 30);
 
 /*Use arrow key to move the graph, 
-Up_key to see upper part
-Down_key to see lower part
-Right_key to see right_part
-Left_key to see left_part*/
+  Up_key to see upper part
+  Down_key to see lower part
+  Right_key to see right_part
+  Left_key to see left_part*/
     	
     	if(GetAsyncKeyState(VK_RIGHT)){
-    		startX -= 20;
+    		startX -= 20; //Move the graph to the right
 		}else if(GetAsyncKeyState(VK_LEFT)){
-			startX += 20;
+			startX += 20;  //Move the graph to the left
 		}else if( GetAsyncKeyState(VK_UP) ){
-			startY +=20;
+			
+			startY +=20;   //Move the graph up
 		}else if( GetAsyncKeyState(VK_DOWN)){
-			startY -= 20;
+			startY -= 20;  //Move the graph down
 		}else if(GetAsyncKeyState(VK_SPACE)){
 			break;
 		}
@@ -540,6 +545,45 @@ Left_key to see left_part*/
 }
 
 
+void readDataFromFile(FILE *fptr){
+		queue<string> q;
+	   stack<string> st;
+	   char expression[100];
+	   
+	   
+	    fgets(expression, 100, fptr);
+        cout << expression << endl;
+        put (expression, q, st);
+        
+        root = makeExpression(q);
+	
+	    cout << "\nLNR: \n";
+	    LNR(root);
+	
+	    drawFunction();
+	    return;
+}
+
+void enterExpression(){
+	queue<string> q;
+	stack<string> st;
+	char c[1000];
+	char expression[100];
+	cout << "Enter Expression : ";
+	getch();
+				gets(c); 
+				cout << c << endl;
+	
+	            put(c, q, st);
+	            root = makeExpression(q);
+	
+	            cout << "\nLNR: \n";
+	            LNR(root);
+	
+	            drawFunction();
+	
+}
+
 
 int main(){
 	queue<string> q;
@@ -548,7 +592,77 @@ int main(){
 	char expression[100];
 	int menu;
 	
+	FILE *fptr;
+	
 	int option = -1;
+	int check;
+	
+	while(1){
+		printf("\n\n----Select the code file----\n");
+		printf("File-1: 3*atan(ln(7.54-8/344)*asin(64*log(7)))-7*6+cos(8-(9^67))\n");
+		printf("File-2: cos(3*ln(pi)-9.6/77)-7*8+ln(6*4-32)\n");
+		printf("File-3: atan(88)-9/sinh(34)+6*sqrt(7.78-cosh(78)) \n");
+		printf("File-4: log(7.66-abs(ln(93)-6*7))+69.5/(3*6-sinh(83))\n");
+		printf("9. Enter your own expression:\n");
+		printf("0. Quit the program\n");
+		printf("--------------------------------\n");
+		printf("Enter your choice:");
+		scanf("%d", &option);
+		
+		
+		check = 0;
+		switch (option){
+			case 0:{
+				check =1;
+				break;
+			}
+			case 1: {
+				fptr = fopen("Input_expression_01.txt", "r");
+				readDataFromFile(fptr);				
+				break;
+			}
+			case 2: {
+				fptr = fopen("Input_expression_02.txt", "r");
+				readDataFromFile(fptr);	
+				break;
+			}
+			case 3: {
+				fptr = fopen("Input_expression_03.txt", "r");
+				readDataFromFile(fptr);	
+				break;
+			}
+			case 4: {
+				fptr = fopen("Input_expression_04.txt", "r");
+				readDataFromFile(fptr);	
+				break;
+			}
+			case 9:{
+				cout << "Enter Expression : ";
+				gets(c); 
+				
+				cout << c << endl;
+	
+	            put(c, q, st);
+	            root = makeExpression(q);
+	
+	            cout << "\nLNR: \n";
+	            LNR(root);
+	
+	            drawFunction();				
+				break;
+			}
+			default: {
+				printf("Invalid option\n");
+				
+				break;
+			}
+			
+		}
+		if( check == 1){
+			break;
+		}
+		
+	}
 	
 	
 	
@@ -581,7 +695,7 @@ int main(){
 //		}
 //		
 //	}
-	cout << "Enter Expression : ";
+//	cout << "Enter Expression : ";
 	
 	
 //	FILE *fptr;
@@ -599,19 +713,19 @@ int main(){
 //cout << expression << endl;
 //    put (expression, q, st);
 	
-	gets(c); cout << c << endl;
-	
-	put(c, q, st);
+//	gets(c); cout << c << endl;
+//	
+//	put(c, q, st);
 
     
     
 	
-	root = makeExpression(q);
-	
-	cout << "\nLNR: \n";
-	LNR(root);
-	
-	drawFunction();
+//	root = makeExpression(q);
+//	
+//	cout << "\nLNR: \n";
+//	LNR(root);
+//	
+//	drawFunction();
 	
 ////	Open graphic mode
 //	
