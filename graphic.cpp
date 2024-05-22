@@ -2,6 +2,7 @@
 #include<fstream>
 #include <cstdlib>
 #include<cstdio>
+#include<conio.h>
 #include <stack>
 #include <queue>
 #include <cmath>
@@ -332,28 +333,7 @@ int childCount(struct tNode* root){
 	if(root->pLeft == NULL && root->pRight == NULL)
 	{
 		return 1;
-	}else 
-//if(root->pRight !=NULL && root->pLeft==NULL){
-//			x = 1 + childCount(root->pRight);
-//			return x;
-//		}else{
-//			if(root->pLeft != NULL){
-//			x = 1+ childCount(root->pLeft);
-//		}
-//		if(root->pRight != NULL){
-//			y = 1+ childCount(root->pRight);
-//
-//		}
-//		
-//		if(x >= y){
-//			return x;
-//		}
-//		else{
-//			return y;
-//		}
-//			
-//		}
-	
+	}else 	
 	{
 		
 		if(root->pRight !=NULL && root->pLeft==NULL){
@@ -411,24 +391,15 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
 //        		delay(1000);
             	line(x, y, x - xOffset, y + 80);
             	drawTree(root->pLeft, x - xOffset, y + 80, xOffset/3, level + 1, 1 );
-
 			}
 			else
 			{
 //				delay(1000);
-
-
-				line(x, y, x - xOffset*cntLeft, y + 80);
-				
+				line(x, y, x - xOffset*cntLeft, y + 80);	
             	drawTree(root->pLeft, x - xOffset*cntLeft, y + 80, xOffset, level + 1, 1);
-
-				
+	
 			}
 		}
-        	
-
-        
-        
         // Draw right subtree
         if (root->pRight != NULL) {
         	int cntRight = childCount(root->pRight);
@@ -440,28 +411,13 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
             	
             	
 
-			} else{
-				
-//				if(cntRight < 3){
-////					delay(1000);
-//					line(x, y, x + xOffset*(cntRight+1), y + 80);
-//				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 80 , xOffset , level + 1, 1 );
-//				}else if(cntRight >=3 && cntRight < 5){
-////					delay(1000);
-//					line(x, y, x + xOffset*(cntRight), y + 80);
-//				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
-//					
-//				}else
-				
-				
-				
-				{
+			} else{					
 //					delay(1000);
 					line(x, y, x + xOffset*(cntRight), y + 80);
 				
 				    drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
 					
-				}
+				
 				
 
 			}
@@ -508,7 +464,6 @@ void drawFunction(){
     	cleardevice();
     	setbkcolor(BLUE);
     	drawTree(root, startX, startY, 150, 0, 1);
-//    	circle(startX, startY, 30);
 
 /*Use arrow key to move the graph, 
   Up_key to see upper part
@@ -532,12 +487,6 @@ void drawFunction(){
 		page = 1 - page;
     	
 	}
-	
-//	drawTree(root, 500, 50, 150, 0, 1);
-//	delay(600);
-//	
-//	
-//	cleardevice();
 
   // Close graphics mode
     getch();
@@ -545,23 +494,23 @@ void drawFunction(){
 }
 
 
-void readDataFromFile(FILE *fptr){
-		queue<string> q;
-	   stack<string> st;
-	   char expression[100];
+void readDataFromFile(FILE *fptr)
+{
+	queue<string> q;
+	stack<string> st;
+	char expression[100];
 	   
-	   
-	    fgets(expression, 100, fptr);
-        cout << expression << endl;
-        put (expression, q, st);
+	fgets(expression, 100, fptr);
+    cout << expression << endl;
+    put (expression, q, st);
         
-        root = makeExpression(q);
+    root = makeExpression(q);
 	
-	    cout << "\nLNR: \n";
-	    LNR(root);
+	cout << "\nLNR: \n";
+	LNR(root);
 	
-	    drawFunction();
-	    return;
+	drawFunction();
+	return;
 }
 
 void enterExpression(){
@@ -569,18 +518,19 @@ void enterExpression(){
 	stack<string> st;
 	char c[1000];
 	char expression[100];
+
 	cout << "Enter Expression : ";
-	getch();
-				gets(c); 
-				cout << c << endl;
-	
-	            put(c, q, st);
-	            root = makeExpression(q);
-	
-	            cout << "\nLNR: \n";
-	            LNR(root);
-	
-	            drawFunction();
+	getchar();
+	gets(c); 
+
+	cout << c << endl;
+	put(c, q, st);
+
+	root = makeExpression(q);	
+	cout << "\nLNR: \n";
+	LNR(root);
+
+	drawFunction();
 	
 }
 
@@ -588,24 +538,24 @@ void enterExpression(){
 int main(){
 	queue<string> q;
 	stack<string> st;
+    FILE *fptr;
 	char c[1000];
 	char expression[100];
 	int menu;
 	
-	FILE *fptr;
 	
 	int option = -1;
 	int check;
-	
+		
 	while(1){
-		printf("\n\n----Select the code file----\n");
+		printf("\n\n-----Select the code file-----\n\n");
 		printf("File-1: 3*atan(ln(7.54-8/344)*asin(64*log(7)))-7*6+cos(8-(9^67))\n");
 		printf("File-2: cos(3*ln(pi)-9.6/77)-7*8+ln(6*4-32)\n");
 		printf("File-3: atan(88)-9/sinh(34)+6*sqrt(7.78-cosh(78)) \n");
 		printf("File-4: log(7.66-abs(ln(93)-6*7))+69.5/(3*6-sinh(83))\n");
 		printf("9. Enter your own expression:\n");
 		printf("0. Quit the program\n");
-		printf("--------------------------------\n");
+		printf("\n--------------------------------\n");
 		printf("Enter your choice:");
 		scanf("%d", &option);
 		
@@ -637,115 +587,18 @@ int main(){
 				break;
 			}
 			case 9:{
-				cout << "Enter Expression : ";
-				gets(c); 
-				
-				cout << c << endl;
-	
-	            put(c, q, st);
-	            root = makeExpression(q);
-	
-	            cout << "\nLNR: \n";
-	            LNR(root);
-	
-	            drawFunction();				
+				enterExpression();			
 				break;
 			}
 			default: {
-				printf("Invalid option\n");
-				
+				printf("Invalid option\n");	
 				break;
 			}
-			
 		}
 		if( check == 1){
 			break;
 		}
-		
 	}
-	
-	
-	
-	
-	
-//	while(option != 0){
-//		printf("\nNhap lua chon cua ban:");
-//		scanf("%d", &option);
-//		
-//		switch(option){
-//			case 1: {
-//				printf("\ncheck1\n");
-//				break;
-//			}
-//			case 2: {
-//				printf("\ncheck2\n");
-//				break;
-//			}
-//			case 3: {
-//				printf("\ncheck3\n");
-//				break;
-//			}
-//			case 0: break;
-//			
-//			default: {
-//				printf("\nWrong option\n");
-//				break;
-//			}
-//			
-//		}
-//		
-//	}
-//	cout << "Enter Expression : ";
-	
-	
-//	FILE *fptr;
-//	
-//	
-//	
-//	
-////	fptr = fopen("Input_expression_01.txt", "r");
-////	fptr = fopen("Input_expression_02.txt", "r");
-////	fptr = fopen("Input_expression_03.txt", "r");
-//
-//    
-//
-//    fgets(expression, 100, fptr);
-//cout << expression << endl;
-//    put (expression, q, st);
-	
-//	gets(c); cout << c << endl;
-//	
-//	put(c, q, st);
-
-    
-    
-	
-//	root = makeExpression(q);
-//	
-//	cout << "\nLNR: \n";
-//	LNR(root);
-//	
-//	drawFunction();
-	
-////	Open graphic mode
-//	
-//    int gd = DETECT, gm;
-//	initwindow(1280,1600);
-//
-//	setlinestyle(CENTER_LINE, 0,3); // change line thickness
-//	settextstyle(4, HORIZ_DIR, 1); //change character size and font
-//	setbkcolor(BLUE);
-//	
-////	Create a binary tree
-//    
-// 
-//	
-//	drawTree(root, 500, 50, 150, 0, 1);
-//
-//  // Close graphics mode
-//    getch();
-//    closegraph();
-	
 	return 0;
 }
 
