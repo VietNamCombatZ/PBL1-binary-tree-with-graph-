@@ -393,6 +393,7 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         
         if(root -> pRight != NULL && root -> pLeft == NULL){
         	// Draw when node has only 1 child node
+//        	delay(1000);
         	line(x,y,x,y+80);
 
 			drawTree(root->pRight, x, y+80, xOffset, level+1, 0); // if xOffset = 0 the following childNode will be place above each other
@@ -405,12 +406,14 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         	int cntLeft = childCount(root->pLeft);
         	
         	if (level == 0 ){
+//        		delay(1000);
             	line(x, y, x - xOffset, y + 80);
             	drawTree(root->pLeft, x - xOffset, y + 80, xOffset/3, level + 1, 1 );
 
 			}
 			else
 			{
+//				delay(1000);
 
 
 				line(x, y, x - xOffset*cntLeft, y + 80);
@@ -429,27 +432,32 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         	int cntRight = childCount(root->pRight);
         	
         	 if (level == 0 ){
+//        	 	delay(1000);
             	line(x, y, x + xOffset, y + 80);
-            	drawTree(root->pRight, x + xOffset, y + 80, xOffset / 3, level + 1, 1);
+            	drawTree(root->pRight, x + xOffset, y + 80, xOffset /3, level + 1, 1);
             	
             	
 
 			} else{
 				
-				if(cntRight < 3){
-					line(x, y, x + xOffset*(cntRight+1), y + 80);
-				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 80 , xOffset , level + 1, 1 );
-				}else if(cntRight >=3 && cntRight < 5){
-					line(x, y, x + xOffset*(cntRight), y + 80);
-				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
-					
-				}else
+//				if(cntRight < 3){
+////					delay(1000);
+//					line(x, y, x + xOffset*(cntRight+1), y + 80);
+//				drawTree(root->pRight, x + xOffset*(cntRight+1), y + 80 , xOffset , level + 1, 1 );
+//				}else if(cntRight >=3 && cntRight < 5){
+////					delay(1000);
+//					line(x, y, x + xOffset*(cntRight), y + 80);
+//				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
+//					
+//				}else
 				
 				
 				
 				{
+//					delay(1000);
 					line(x, y, x + xOffset*(cntRight), y + 80);
-				drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
+				
+				    drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
 					
 				}
 				
@@ -474,6 +482,63 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
     }
 }
 
+void drawFunction(){
+	//	Open graphic mode
+	
+    int gd = DETECT, gm;
+	initwindow(1280,1600);
+	
+	int startX = 500, startY=50;
+	int page =0;
+
+	setlinestyle(CENTER_LINE, 0,3); // change line thickness
+	settextstyle(4, HORIZ_DIR, 1); //change character size and font
+	setbkcolor(BLUE);
+	
+//	Create a binary tree
+    
+    while(1){
+    	setactivepage(page);
+    	setvisualpage(1-page);
+    	setbkcolor(BLACK);
+    	cleardevice();
+    	setbkcolor(BLUE);
+    	drawTree(root, startX, startY, 150, 0, 1);
+//    	circle(startX, startY, 30);
+
+/*Use arrow key to move the graph, 
+Up_key to see upper part
+Down_key to see lower part
+Right_key to see right_part
+Left_key to see left_part*/
+    	
+    	if(GetAsyncKeyState(VK_RIGHT)){
+    		startX -= 20;
+		}else if(GetAsyncKeyState(VK_LEFT)){
+			startX += 20;
+		}else if( GetAsyncKeyState(VK_UP) ){
+			startY +=20;
+		}else if( GetAsyncKeyState(VK_DOWN)){
+			startY -= 20;
+		}else if(GetAsyncKeyState(VK_SPACE)){
+			break;
+		}
+		delay(10);
+		page = 1 - page;
+    	
+	}
+	
+//	drawTree(root, 500, 50, 150, 0, 1);
+//	delay(600);
+//	
+//	
+//	cleardevice();
+
+  // Close graphics mode
+    getch();
+    closegraph();
+}
+
 
 
 int main(){
@@ -481,9 +546,41 @@ int main(){
 	stack<string> st;
 	char c[1000];
 	char expression[100];
+	int menu;
 	
 	int option = -1;
 	
+	
+	
+	
+	
+//	while(option != 0){
+//		printf("\nNhap lua chon cua ban:");
+//		scanf("%d", &option);
+//		
+//		switch(option){
+//			case 1: {
+//				printf("\ncheck1\n");
+//				break;
+//			}
+//			case 2: {
+//				printf("\ncheck2\n");
+//				break;
+//			}
+//			case 3: {
+//				printf("\ncheck3\n");
+//				break;
+//			}
+//			case 0: break;
+//			
+//			default: {
+//				printf("\nWrong option\n");
+//				break;
+//			}
+//			
+//		}
+//		
+//	}
 	cout << "Enter Expression : ";
 	
 	
@@ -514,26 +611,29 @@ int main(){
 	cout << "\nLNR: \n";
 	LNR(root);
 	
-//	Open graphic mode
+	drawFunction();
 	
-    int gd = DETECT, gm;
-	initwindow(1280,1600);
-
-	setlinestyle(CENTER_LINE, 0,3); // change line thickness
-	settextstyle(4, HORIZ_DIR, 1); //change character size and font
-	setbkcolor(BLUE);
-	
-//	Create a binary tree
-    
- 
-	
-	drawTree(root, 500, 50, 150, 0, 1);
-
-  // Close graphics mode
-    getch();
-    closegraph();
+////	Open graphic mode
+//	
+//    int gd = DETECT, gm;
+//	initwindow(1280,1600);
+//
+//	setlinestyle(CENTER_LINE, 0,3); // change line thickness
+//	settextstyle(4, HORIZ_DIR, 1); //change character size and font
+//	setbkcolor(BLUE);
+//	
+////	Create a binary tree
+//    
+// 
+//	
+//	drawTree(root, 500, 50, 150, 0, 1);
+//
+//  // Close graphics mode
+//    getch();
+//    closegraph();
 	
 	return 0;
 }
 
-//cos(93)*7-9/(7-533*7/(9-16*3)) 
+//cos(9.35*7-atan(6+ln(3^7)))*7-9/(7-533*7/(9-16*3))/(atan(7-ln(6^77))/9-acos(8*3.44)) 
+// cos(7-9*6^7-6*atan(7-87))
