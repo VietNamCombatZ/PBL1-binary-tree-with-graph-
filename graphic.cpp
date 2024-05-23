@@ -173,26 +173,6 @@ void put(char* s, queue<string> &q, stack<string> &st){			// convert expression 
             string s = "abs";
             st.push(s);
         }
-        else if(s[i] == 'c' && s[i + 1] == 'o' && s[i + 2] == 's'){
-            i+=2;
-            string s = "cos";
-            st.push(s);
-        }
-        else if(s[i] == 's' && s[i + 1] == 'i' && s[i + 2] == 'n'){
-            i+=2;
-            string s = "sin";
-            st.push(s);
-        }
-        else if(s[i] == 't' && s[i + 1] == 'a' && s[i + 2] == 'n'){
-            i+=2;
-            string s = "tan";
-            st.push(s);
-        }
-        else if(s[i] == 'c' && s[i + 1] == 'o' && s[i + 2] == 't'){
-            i += 2;
-            string s = "cot";
-            st.push(s);
-        }
         else if(s[i] == 'a' && s[i + 1] == 's' && s[i + 2] == 'i' && s[i+3] == 'n'){
             i += 3;
             string s = "asin";
@@ -231,6 +211,26 @@ void put(char* s, queue<string> &q, stack<string> &st){			// convert expression 
         else if(s[i] == 'c' && s[i + 1] == 'o' && s[i + 2] == 't' && s[i+3] == 'h'){
             i += 3;
             string s = "coth";
+            st.push(s);
+        }
+        else if(s[i] == 'c' && s[i + 1] == 'o' && s[i + 2] == 's'){
+            i+=2;
+            string s = "cos";
+            st.push(s);
+        }
+        else if(s[i] == 's' && s[i + 1] == 'i' && s[i + 2] == 'n'){
+            i+=2;
+            string s = "sin";
+            st.push(s);
+        }
+        else if(s[i] == 't' && s[i + 1] == 'a' && s[i + 2] == 'n'){
+            i+=2;
+            string s = "tan";
+            st.push(s);
+        }
+        else if(s[i] == 'c' && s[i + 1] == 'o' && s[i + 2] == 't'){
+            i += 2;
+            string s = "cot";
             st.push(s);
         }
         else if(s[i] == 's' && s[i + 1] == 'q' && s[i + 2] == 'r' && s[i+3] == 't'){
@@ -324,10 +324,6 @@ tNode* makeExpression(queue<string> q){
 
 
 // Function to draw a binary tree recursively
-int xOffpos = 50;
-int lCnt = 0;
-int rCnt = 0;
-
 
 int childCount(struct tNode* root){
 	int x=0,y=0;
@@ -346,9 +342,7 @@ int childCount(struct tNode* root){
 		}
 		if(root->pRight != NULL){
 			y = 1+ childCount(root->pRight);
-
 		}
-
 
 		if(x >= y){
 			return x;
@@ -367,13 +361,10 @@ int childCount(struct tNode* root){
 //check if following node is drawn straight down, check = 0, else check = 1
 
 void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int check) {
-	
-	
+
     if (root != NULL) {
-        // Draw left subtree
-        
-        int xOffset_1 = xOffset*check;
-        
+        // Draw left subtree       
+        int xOffset_1 = xOffset*check;        
         if(root -> pRight != NULL && root -> pLeft == NULL){
         	// Draw when node has only 1 child node
 //        	delay(1000);
@@ -382,16 +373,14 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
 			drawTree(root->pRight, x, y+80, xOffset, level+1, 0); // if xOffset = 0 the following childNode will be place above each other
         	
         	
-		}else{
-		
-		
+		}else{		
         if (root->pLeft != NULL) {
         	int cntLeft = childCount(root->pLeft);
         	
         	if (level == 0 ){
 //        		delay(1000);
-            	line(x, y, x - xOffset, y + 80);
-            	drawTree(root->pLeft, x - xOffset, y + 80, xOffset/3, level + 1, 1 );
+            	line(x, y, x - xOffset*cntLeft, y + 80);
+            	drawTree(root->pLeft, x - xOffset*cntLeft, y + 80, xOffset, level + 1, 1 );
 			}
 			else
 			{
@@ -407,8 +396,8 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
         	
         	 if (level == 0 ){
 //        	 	delay(1000);
-            	line(x, y, x + xOffset, y + 80);
-            	drawTree(root->pRight, x + xOffset, y + 80, xOffset /3, level + 1, 1);
+            	line(x, y, x + xOffset*cntRight, y + 80);
+            	drawTree(root->pRight, x + xOffset*cntRight, y + 80, xOffset , level + 1, 1);
             	
             	
 
@@ -464,13 +453,14 @@ void drawFunction(){
     	setbkcolor(BLACK);
     	cleardevice();
     	setbkcolor(BLUE);
-    	drawTree(root, startX, startY, 150, 0, 1);
+    	drawTree(root, startX, startY, 50, 0, 1);
 
 /*Use arrow key to move the graph, 
   Up_key to see upper part
   Down_key to see lower part
   Right_key to see right_part
-  Left_key to see left_part*/
+  Left_key to see left_part
+  SPACE to quit the graphic window and go back to the menu window*/
     	
     	if(GetAsyncKeyState(VK_RIGHT)){
     		startX -= 20; //Move the graph to the right
@@ -488,9 +478,12 @@ void drawFunction(){
 		page = 1 - page;
     	
 	}
+	
 
   // Close graphics mode
     getch();
+    
+    
     closegraph();
 }
 
@@ -551,6 +544,7 @@ int main(){
 	int option = -1;
 	int check;
 	
+//	colors(BLUE);
 	SetConsoleTextAttribute(h, 6);
 		
 	while(1){
@@ -573,23 +567,31 @@ int main(){
 				break;
 			}
 			case 1: {
+				fptr = NULL;
 				fptr = fopen("Input_expression_01.txt", "r");
-				readDataFromFile(fptr);				
+				readDataFromFile(fptr);	
+							
 				break;
 			}
 			case 2: {
+				fptr = NULL;
 				fptr = fopen("Input_expression_02.txt", "r");
 				readDataFromFile(fptr);	
+				
 				break;
 			}
 			case 3: {
+				fptr = NULL;
 				fptr = fopen("Input_expression_03.txt", "r");
 				readDataFromFile(fptr);	
+					
 				break;
 			}
 			case 4: {
+				fptr = NULL;
 				fptr = fopen("Input_expression_04.txt", "r");
 				readDataFromFile(fptr);	
+					
 				break;
 			}
 			case 9:{
