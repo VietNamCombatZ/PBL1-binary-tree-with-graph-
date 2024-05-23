@@ -14,6 +14,8 @@
 #define Pi M_PI
 using namespace std;
 
+int cnt =0;
+
 struct tNode{
 	string data;
 	tNode *pLeft, *pRight;
@@ -406,11 +408,7 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
 					line(x, y, x + xOffset*(cntRight), y + 80);
 				
 				    drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
-					
-				
-				
-
-			}
+		}
 
         }
         
@@ -432,7 +430,7 @@ void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int chec
 
 
 
-void drawFunction(){
+void drawFunction(int cnt){
 	//	Open graphic mode
 	
     int gd = DETECT, gm;
@@ -440,9 +438,13 @@ void drawFunction(){
 	
 	int startX = 500, startY=50;
 	int page =0;
-
-	setlinestyle(CENTER_LINE, 0,3); // change line thickness
+	if( cnt == 0){
+		setlinestyle(CENTER_LINE, 0,3); // change line thickness
 	settextstyle(4, HORIZ_DIR, 1); //change character size and font
+	}
+	
+
+	
 	setbkcolor(BLUE);
 	
 //	Create a binary tree
@@ -450,6 +452,7 @@ void drawFunction(){
     while(1){
     	setactivepage(page);
     	setvisualpage(1-page);
+    	
     	setbkcolor(BLACK);
     	cleardevice();
     	setbkcolor(BLUE);
@@ -496,6 +499,7 @@ void readDataFromFile(FILE *fptr)
 	   
 	fgets(expression, 100, fptr);
     cout << expression << endl;
+    fclose(fptr);
     put (expression, q, st);
         
     root = makeExpression(q);
@@ -503,7 +507,8 @@ void readDataFromFile(FILE *fptr)
 	cout << "\nLNR: \n";
 	LNR(root);
 	
-	drawFunction();
+	drawFunction(cnt);
+	cnt++;
 	return;
 }
 
@@ -524,7 +529,8 @@ void enterExpression(){
 	cout << "\nLNR: \n";
 	LNR(root);
 
-	drawFunction();
+	drawFunction(cnt);
+	cnt++;
 	
 }
 
@@ -544,9 +550,11 @@ int main(){
 	int option = -1;
 	int check;
 	
+	
 //	colors(BLUE);
-	SetConsoleTextAttribute(h, 6);
+	SetConsoleTextAttribute(h, 6); // Set color of console text to dark yellow
 		
+	//Menu of the programme
 	while(1){
 		printf("\n\n-----Select the code file-----\n\n");
 		printf("File-1: 3*atan(ln(7.54-8/344)*asin(64*log(7)))-7*6+cos(8-(9^67))\n");
