@@ -362,53 +362,40 @@ int childCount(struct tNode* root){
 //check neu la ve node sau thang xuong thi check = 0, con binh thuong check = 1
 //check if following node is drawn straight down, check = 0, else check = 1
 
-void drawTree(struct tNode* root, int x, int y, int xOffset, int level, int check) {
+void drawTree(struct tNode* root, int x, int y, int xOffset, int level) {
 
     if (root != NULL) {
         // Draw left subtree       
-        int xOffset_1 = xOffset*check;        
+              
         if(root -> pRight != NULL && root -> pLeft == NULL){
         	// Draw when node has only 1 child node
 //        	delay(1000);
         	line(x,y,x,y+80);
 
-			drawTree(root->pRight, x, y+80, xOffset, level+1, 0); // if xOffset = 0 the following childNode will be place above each other
+			drawTree(root->pRight, x, y+80, xOffset, level +1); // if xOffset = 0 the following childNode will be place above each other
         	
         	
 		}else{		
         if (root->pLeft != NULL) {
         	int cntLeft = childCount(root->pLeft);
         	
-        	if (level == 0 ){
-//        		delay(1000);
-            	line(x, y, x - xOffset*cntLeft, y + 80);
-            	drawTree(root->pLeft, x - xOffset*cntLeft, y + 80, xOffset, level + 1, 1 );
-			}
-			else
-			{
+        	
 //				delay(1000);
 				line(x, y, x - xOffset*cntLeft, y + 80);	
-            	drawTree(root->pLeft, x - xOffset*cntLeft, y + 80, xOffset, level + 1, 1);
+            	drawTree(root->pLeft, x - xOffset*cntLeft, y + 80, xOffset, level+1);
 	
-			}
+			
 		}
         // Draw right subtree
         if (root->pRight != NULL) {
         	int cntRight = childCount(root->pRight);
         	
-        	 if (level == 0 ){
-//        	 	delay(1000);
-            	line(x, y, x + xOffset*cntRight, y + 80);
-            	drawTree(root->pRight, x + xOffset*cntRight, y + 80, xOffset , level + 1, 1);
-            	
-            	
-
-			} else{					
+        	 					
 //					delay(1000);
 					line(x, y, x + xOffset*(cntRight), y + 80);
 				
-				    drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset , level + 1 ,1);
-		}
+				    drawTree(root->pRight, x + xOffset*(cntRight), y + 80 , xOffset, level+1 );
+		
 
         }
         
@@ -456,7 +443,7 @@ void drawFunction(int cnt){
     	setbkcolor(BLACK);
     	cleardevice();
     	setbkcolor(BLUE);
-    	drawTree(root, startX, startY, 50, 0, 1);
+    	drawTree(root, startX, startY, 50,0);
 
 /*Use arrow key to move the graph, 
   Up_key to see upper part
@@ -617,6 +604,3 @@ int main(){
 	}
 	return 0;
 }
-
-//cos(9.35*7-atan(6+ln(3^7)))*7-9/(7-533*7/(9-16*3))/(atan(7-ln(6^77))/9-acos(8*3.44)) 
-// cos(7-9*6^7-6*atan(7-87))
